@@ -14,18 +14,17 @@ db = SQLAlchemy(app)
 # Print the absolute path of the database
 print(f"Database path: {os.path.abspath(os.path.join(app.instance_path, 'test.db'))}")
 
-# Create database tables if they don't exist
-with app.app_context():
-    db.create_all()
-
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
     date_created = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
-
     def __repr__(self):
         return '<Task %r>' % self.id
+
+# Create database tables if they don't exist
+with app.app_context():
+    db.create_all()
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
