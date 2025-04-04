@@ -1,10 +1,18 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
+import os
 
-app = Flask(__name__)
+# Get the absolute path of the current directory
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+# Create Flask app with explicit instance path
+app = Flask(__name__, instance_path=os.path.join(basedir, 'instance'))
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
+
+# Print the absolute path of the database
+print(f"Database path: {os.path.abspath(os.path.join(app.instance_path, 'test.db'))}")
 
 # Create database tables if they don't exist
 with app.app_context():
